@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: ee2bfcf754034334495cd8bc6c89f015
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Mocha Cookies
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: cbfdbc82d0b81144ca3cadc5ec2295cf, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
