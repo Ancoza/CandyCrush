@@ -18,6 +18,8 @@ public class BoardManager : MonoBehaviour
     //Candy selected is change postion or not
     public bool ifShifting { get; set; }
 
+
+    private Candy selectedCandy;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +43,8 @@ public class BoardManager : MonoBehaviour
         candies = new GameObject[xSize, ySize];
         float startX = this.transform.position.x;
         float startY = this.transform.position.y;
-        
+        int idx;
+
         //Create Board
         for (int x = 0; x < xSize; x++)
         {
@@ -56,13 +59,22 @@ public class BoardManager : MonoBehaviour
                 //Put name of candy in the matrix
                 newCandy.name = string.Format("Candy[{0}][{1}]", x, y);
                 
+                do
+                {
+                    idx = Random.Range(0, prefabs.Count);
+                }while(( x > 0 && idx == candies[x - 1, y].GetComponent<Candy>().id) ||
+                        (y > 0 && idx == candies[x, y - 1].GetComponent<Candy>().id)); 
+
+                Sprite sprite = prefabs[idx];
                 // Get random sprite from list candies
-                Sprite sprite = prefabs[Random.Range(0, prefabs.Count)];
+                //Sprite sprite = prefabs[Random.Range(0, prefabs.Count)];
+
                 //Assign sprite to candy
                 newCandy.GetComponent<SpriteRenderer>().sprite = sprite;
                 //Assing id to candy
-                newCandy.GetComponent<Candy>().id = -1;
+                newCandy.GetComponent<Candy>().id = idx;
                 
+                newCandy.transform.parent = this.transform;
                 candies[x, y] = newCandy;
             }
         }

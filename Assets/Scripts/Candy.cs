@@ -29,15 +29,93 @@ public class Candy : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private void SelectedCandy(){
+        isSelected = true;
+        spriteRenderer.color = selectedColor;
+        previousSelected = gameObject.GetComponent<Candy>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void DeselectedCandy(){
+        isSelected = false;
+        spriteRenderer.color = Color.white;
+        previousSelected = null;
+    }
+
+    private void OnMouseDown()
     {
+        if(spriteRenderer.sprite == null || BoardManager.sharedInstance.ifShifting)
+        {
+            return;
+        }
         
+        if (isSelected)
+        {
+            DeselectedCandy();
+        }
+        else
+        {
+            if (previousSelected == null)
+            {
+                SelectedCandy();
+            }
+            else{
+                if(CanSwipe())
+                {
+                    SwapSprite(previousSelected);
+                    previousSelected.DeselectedCandy();
+                }
+                else{
+                    previousSelected.DeselectedCandy();
+                    SelectedCandy();
+                }
+            }
+        
+        }
+    }
+
+    public void SwapSprite(Candy newCandy){
+        
+        if(spriteRenderer.sprite == newCandy.GetComponent<SpriteRenderer>().sprite)
+        {
+            return;
+        }
+
+        //Swap sprite
+        Sprite oldCandy = newCandy.spriteRenderer.sprite;
+        newCandy.spriteRenderer.sprite = this.spriteRenderer.sprite;
+        this.spriteRenderer.sprite = oldCandy;
+        //Swap id
+        int oldId = newCandy.id;
+        newCandy.id = this.id;
+        this.id = oldId;
+
+    }
+
+    private GameObject GetNeighbor(Vector2 direction)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, direction);
+        
+        if (hit.collider != null)
+        {
+            return hit.collider.gameObject;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private List<GameObject> GetNeighbors()
+    {
+        List<GameObject> neighbors = new List<GameObject>();
+        foreach (Vector2 direction in adjacentDirections)
+        {
+            neighbors.Add(GetNeighbor(direction));
+        }
+        return neighbors;
+    }
+
+    private bool CanSwipe(){
+        return GetNeighbors().Contains(previousSelected.gameObject);
     }
 }
