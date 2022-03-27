@@ -6,11 +6,16 @@ public class BoardManager : MonoBehaviour
 {
 
     public static BoardManager sharedInstance;
-    public List<Sprite> prefabs = new List<Sprite>();
-    public GameObject currentCandy;
-    public int xSize, ySize;
 
+    //List of sprites candies
+    public List<Sprite> prefabs = new List<Sprite>();
+    //Selected candy
+    public GameObject currentCandy;
+    //matrix containing all candies
     private GameObject[,] candies;
+    //Size of the board
+    public int xSize, ySize;
+    //Candy selected is change postion or not
     public bool ifShifting { get; set; }
 
     // Start is called before the first frame update
@@ -25,11 +30,12 @@ public class BoardManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        //Space used by candy
         Vector2 offset = currentCandy.GetComponent<BoxCollider2D>().size;
         CreateInitialBoard(offset);
     }
 
-    //Create Inictial Board
+    //Create matrix of candies
     private void CreateInitialBoard(Vector2 offset)
     {
         candies = new GameObject[xSize, ySize];
@@ -47,13 +53,14 @@ public class BoardManager : MonoBehaviour
                                         0),
                                         currentCandy.transform.rotation
                                         );
+                //Put name of candy in the matrix
                 newCandy.name = string.Format("Candy[{0}][{1}]", x, y);
                 
-                //Obtiene un sprite aleatorio de la lista de caramelos
+                // Get random sprite from list candies
                 Sprite sprite = prefabs[Random.Range(0, prefabs.Count)];
-                //Asigna el sprite al caramelo
+                //Assign sprite to candy
                 newCandy.GetComponent<SpriteRenderer>().sprite = sprite;
-                //Asigan el identificador al caramelo
+                //Assing id to candy
                 newCandy.GetComponent<Candy>().id = -1;
                 
                 candies[x, y] = newCandy;

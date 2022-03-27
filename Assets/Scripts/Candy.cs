@@ -10,11 +10,12 @@ public class Candy : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
-    //Saber si el caramelo esta seleccionado
+    // To know if the candy is selected or not
     private bool isSelected = false;
 
     public int id;
 
+    //Candy adjacent positions
     private Vector2[] adjacentDirections = new Vector2[]
     {
         Vector2.up,
